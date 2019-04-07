@@ -1,10 +1,11 @@
 #!/bin/env bash
 
-cd /tmp
-if [[ ! -f /usr/lib/emsdk/emsdk_env.sh ] || [ ! -f $HOME/.emscripten ]]; then
+cd /opt
+
+if ([ ! -f /usr/lib/emsdk/emsdk_env.sh ] || [ ! -f $HOME/.emscripten ]); then
 	git clone https://github.com/juj/emsdk
 	pushd emsdk
-	./emsdk install latest
+	sudo ./emsdk install latest
 	./emsdk activate latest
 	source emsdk_env.sh
 	popd
@@ -12,18 +13,19 @@ else
 	source /usr/lib/emsdk/emsdk_env.sh
 fi
 
-exit $?
-
 git clone --recurse-submodules git://github.com/mosra/corrade
 git clone --recurse-submodules git://github.com/mosra/magnum
 git clone --recurse-submodules git://github.com/mosra/magnum-plugins
-git clone --recurse-submodules git://github.com/mosra/magnum-integration
+#git clone --recurse-submodules git://github.com/mosra/magnum-integration
 git clone --recurse-submodules git://github.com/mosra/magnum-extras
+git clone --recurse-submodules git://github.com/mosra/magnum-examples
 
 BUILD_DIR=build-emc
+
 mkdir corrade/$BUILD_DIR
 mkdir magnum/$BUILD_DIR
 mkdir magnum-plugins/$BUILD_DIR
+#mkdir magnum-integration/$BUILD_DIR
 mkdir magnum-extras/$BUILD_DIR
 mkdir magnum-examples/$BUILD_DIR
 
@@ -35,7 +37,7 @@ EMSCRIPTEN_PREFIX="/usr/lib/emscripten"
 
 CMAKE_CMD="cmake .. -GNinja -DCMAKE_PREFIX_PATH=$PREFIX_PATH -DCMAKE_INSTALL_PREFIX=$EMSCRIPTEN_PREFIX/system -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake -DEMSCRIPTEN_PREFIX=$EMSCRIPTEN_PREFIX"
 
-CMAKE_BUILD_CMD="cmake --build . --target install"
+CMAKE_BUILD_CMD="sudo cmake --build . --target install"
 
 cd corrade/$BUILD_DIR
 $CMAKE_CMD -DWITH_TESTSUITE=ON -DBUILD_DEPRECATED=OFF
