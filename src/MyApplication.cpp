@@ -1,6 +1,7 @@
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/Platform/Sdl2Application.h>
 
+#include <iostream>
 using namespace Magnum;
 
 class MyApplication: public Platform::Application {
@@ -13,6 +14,7 @@ class MyApplication: public Platform::Application {
 
 MyApplication::MyApplication(const Arguments& arguments): Platform::Application{arguments} {
     /* TODO: Add your initialization code here */
+std::cout << "Test\n";
 }
 
 void MyApplication::drawEvent() {
